@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Código de Sistema de Gestión</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .code-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .code-section h2 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .file-header {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            border-left: 4px solid #667eea;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        pre {
+            margin: 0;
+            border-radius: 0 0 8px 8px;
+            overflow-x: auto;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .tech-tag {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .description {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Volver al Portafolio
+        </a>
+        
+        <div class="header">
+            <h1><i class="fas fa-store"></i> Sistema de Gestión</h1>
+            <p>Código fuente del sistema de gestión empresarial desarrollado en React</p>
+        </div>
+        
+        <div class="code-section">
+            <div class="description">
+                <h3>Descripción del Proyecto</h3>
+                <p>Sistema de gestión para vendedores y stock desarrollado con React y Firebase.</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">React</span>
+                    <span class="tech-tag">Firebase</span>
+                    <span class="tech-tag">CSS3</span>
+                    <span class="tech-tag">JavaScript</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="code-section">
+            <h2><i class="fas fa-file-code"></i> Componente Principal - App.js</h2>
+            <div class="file-header">src/App.js</div>
+            <pre><code class="language-javascript">import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import './App.css';
+
+
+import Navbar from './components/Navbar';
+import Dashboard from './components/Dashboard';
+import Vendedores from './components/Vendedores';
+import Stock from './components/Stock';
+
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <Navbar />
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/vendedores" element={<Vendedores />} />
+            <Route path="/stock" element={<Stock />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
+  );
+}
+
+export default App;</code></pre>
+        </div>
+        
+        <div class="code-section">
+            <h2><i class="fas fa-users"></i> Hook Personalizado - useVendedores.js</h2>
+            <div class="file-header">src/hooks/useVendedores.js</div>
+            <pre><code class="language-javascript">import { useState, useEffect } from 'react';
+import { vendedoresService } from '../services/firebase';
+import { generarId } from '../utils/helpers';
+
+export const useVendedores = () => {
+  const [vendedores, setVendedores] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const cargarVendedores = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+
+      if (vendedoresService.isConfigured()) {
+        const data = await vendedoresService.obtenerTodos();
+        setVendedores(data);
+      } else {
+
+        const vendedoresLocal = JSON.parse(localStorage.getItem('vendedores') || '[]');
+        setVendedores(vendedoresLocal);
+      }
+    } catch (err) {
+      console.error('Error al cargar vendedores:', err);
+      setError('Error al cargar los vendedores');
+      
+
+      const vendedoresLocal = JSON.parse(localStorage.getItem('vendedores') || '[]');
+      setVendedores(vendedoresLocal);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const agregarVendedor = async (nuevoVendedor) => {
+    try {
+      const vendedorConDatos = {
+        ...nuevoVendedor,
+        fechaCreacion: new Date().toISOString(),
+        id: generarId()
+      };
+
+      if (vendedoresService.isConfigured()) {
+        await vendedoresService.crear(vendedorConDatos);
+      } else {
+
+        const vendedoresActuales = JSON.parse(localStorage.getItem('vendedores') || '[]');
+        vendedoresActuales.push(vendedorConDatos);
+        localStorage.setItem('vendedores', JSON.stringify(vendedoresActuales));
+      }
+      
+      await cargarVendedores();
+      return vendedorConDatos;
+    } catch (err) {
+      console.error('Error al agregar vendedor:', err);
+      throw new Error('Error al agregar el vendedor');
+    }
+  };
+
+  useEffect(() => {
+    cargarVendedores();
+  }, []);
+
+  return {
+    vendedores,
+    loading,
+    error,
+    cargarVendedores,
+    agregarVendedor
+  };
+};</code></pre>
+        </div>
+        
+        <div class="code-section">
+            <h2><i class="fas fa-database"></i> Servicio Firebase</h2>
+            <div class="file-header">src/services/firebase.js</div>
+            <pre><code class="language-javascript">import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+
+
+const firebaseConfig = {
+
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID
+};
+
+let app = null;
+let db = null;
+
+
+if (firebaseConfig.apiKey) {
+  app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+}
+
+
+export const vendedoresService = {
+  isConfigured: () => !!db,
+  
+  async obtenerTodos() {
+    if (!db) throw new Error('Firebase no configurado');
+    const querySnapshot = await getDocs(collection(db, 'vendedores'));
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  },
+  
+  async crear(vendedor) {
+    if (!db) throw new Error('Firebase no configurado');
+    const docRef = await addDoc(collection(db, 'vendedores'), vendedor);
+    return docRef.id;
+  },
+  
+  async actualizar(id, datos) {
+    if (!db) throw new Error('Firebase no configurado');
+    const vendedorRef = doc(db, 'vendedores', id);
+    await updateDoc(vendedorRef, datos);
+  },
+  
+  async eliminar(id) {
+    if (!db) throw new Error('Firebase no configurado');
+    await deleteDoc(doc(db, 'vendedores', id));
+  }
+};</code></pre>
+        </div>
+        
+        <div class="code-section">
+            <h2><i class="fas fa-tools"></i> Utilidades</h2>
+            <div class="file-header">src/utils/helpers.js</div>
+            <pre><code class="language-javascript">
+export const generarId = () => {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+};
+
+
+export const formatearFecha = (fecha) => {
+  return new Date(fecha).toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
+
+
+export const validarEmail = (email) => {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+};
+
+
+export const capitalizarPrimeraLetra = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};</code></pre>
+        </div>
+        
+        <div class="code-section">
+            <h2><i class="fas fa-cog"></i> Configuración del Proyecto</h2>
+            <div class="file-header">package.json</div>
+            <pre><code class="language-json">{
+  "name": "vendedores-stock-react",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": ".",
+  "dependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "firebase": "^12.1.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.0",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  }
+}</code></pre>
+        </div>
+        
+        <div class="code-section">
+            <div class="description">
+                <h3><i class="fas fa-lightbulb"></i> Características Destacadas</h3>
+                <ul>
+                    <li><strong>Componentes:</strong> Estructura modular con hooks personalizados</li>
+                    <li><strong>Estado:</strong> Manejo con React Hooks</li>
+                    <li><strong>Base de datos:</strong> Firebase con localStorage como respaldo</li>
+                    <li><strong>Navegación:</strong> React Router para SPA</li>
+                    <li><strong>Errores:</strong> Manejo básico de errores y estados de carga</li>
+                    <li><strong>Diseño:</strong> Responsive para móviles y desktop</li>
+                    <li><strong>Producción:</strong> Build optimizado para despliegue</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>
