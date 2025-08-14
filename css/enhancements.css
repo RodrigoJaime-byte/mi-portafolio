@@ -21,13 +21,11 @@
     font-weight: 500;
 }
 
-/* Efecto hover mejorado para botones */
 .btn:hover {
     transform: translateY(-2px) !important;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
 }
 
-/* Mejoras para el botón volver arriba */
 .back-to-top {
     position: fixed;
     bottom: 20px;
@@ -48,8 +46,6 @@
 
 .back-to-top:hover {
     transform: scale(1.1);
-    background: #2980b9;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Cursor personalizado para elementos interactivos */

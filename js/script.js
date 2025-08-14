@@ -64,7 +64,6 @@ document.querySelectorAll('.skill-category, .project-card, .contact-content').fo
 
 
 
-
 // Indicador de progreso de scroll
 window.addEventListener('scroll', () => {
     const scrollProgress = document.querySelector('.scroll-progress');

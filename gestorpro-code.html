@@ -188,7 +188,6 @@ export const useVendedores = () => {
       setLoading(true);
       setError(null);
       
-
       if (vendedoresService.isConfigured()) {
         const data = await vendedoresService.obtenerTodos();
         setVendedores(data);
@@ -201,7 +200,6 @@ export const useVendedores = () => {
       console.error('Error al cargar vendedores:', err);
       setError('Error al cargar los vendedores');
       
-
       const vendedoresLocal = JSON.parse(localStorage.getItem('vendedores') || '[]');
       setVendedores(vendedoresLocal);
     } finally {
